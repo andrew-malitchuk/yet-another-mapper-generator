@@ -1,18 +1,15 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    namespace 'dev.yamg.app'
+    namespace 'dev.yamg.lib'
     compileSdk 33
 
     defaultConfig {
-        applicationId "dev.yamg.lib"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
     }
 
     buildTypes {
@@ -33,5 +30,4 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }

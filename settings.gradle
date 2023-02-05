@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "YAMG"
 include ':app'
+include ':lib'
