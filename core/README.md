@@ -26,15 +26,5 @@
 
 ---
 
-## About
-
-YAMG (Yet Another Mapper Generator) is a KSP written plugin; its main goal to avoid boilerplate for mapper between (Data ↔️ Domain ↔️ UI).
-
-YAMG supports two ways of mapper implementation - method way (`to[Layer]Model()`) and class way (`*[LayerA]to[LayerB]ModelMapper`).
-
-## How it works?
-
-// **TODO:** 
-
-## Installation 
+## :yamg:core
 
