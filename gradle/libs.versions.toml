@@ -17,7 +17,7 @@ material = "1.8.0"
 [libraries]
 
 #region Android
-appCompat = { module = "androidx.appCompat:appCompat", version.ref = "appCompat" }
+appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompat" }
 coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 #endregion Android
 
