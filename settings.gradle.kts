@@ -8,14 +8,6 @@ pluginManagement {
     }
 }
 
-dependencyResolutionManagement {
-    @Suppress("UnstableApiUsage")
-    versionCatalogs {
-        create("libs") {
-            from(files("./libs.versions.toml"))
-        }
-    }
-}
 
 include(":app")
 include(":core")

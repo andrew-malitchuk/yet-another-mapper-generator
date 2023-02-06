@@ -1,0 +1,31 @@
+[versions]
+#region Plugins
+androidKotlin = "1.8.10"
+androidApplication = "7.4.1"
+androidLibrary = "7.4.1"
+#endregion Plugins
+
+#region Android
+appCompat = "1.6.0"
+coreKtx = "1.9.0"
+#endregion Android
+
+#region Google
+material = "1.8.0"
+#endregion Google
+
+[libraries]
+
+#region Android
+appCompat = { module = "androidx.appCompat:appCompat", version.ref = "appCompat" }
+coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+#endregion Android
+
+#region Google
+material = { module = "com.google.android.material:material", version.ref = "material" }
+#endregion Google
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "androidApplication" }
+androidLibrary = { id = "com.android.library", version.ref = "androidLibrary" }
+androidKotlin = { id = "org.jetbrains.kotlin.android", version.ref = "androidKotlin" }
