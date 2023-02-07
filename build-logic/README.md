@@ -1,7 +1,5 @@
 # [YAMG] Yet Another Mapper Generator
 
-// **TODO:** add badges
-
           _____                    _____                    _____                    _____          
          |\    \                  /\    \                  /\    \                  /\    \         
          |:\____\                /::\    \                /::\____\                /::\    \        
@@ -24,8 +22,19 @@
                                  \::/    /                \::/    /                \::/____/        
                                   \/____/                  \/____/                                  
 
-## :yamg:core
+## Convention plugins
 
+There are 4 types of plugins:
+
+- `base-convention` - contains all base configuration that could be share in a whole project;
+- `application-convention` - convention plugin for application;
+- `feature-convention` - convention plugin for feature;
+- `library-convention` - convention plugin for library.
+
+
+## Configure
+
+All values for configuration locates in `Configuration.kt` (`targetSdk`, `minSdk` etc).
 
 ## License
 
