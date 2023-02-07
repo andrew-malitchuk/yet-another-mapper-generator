@@ -27,7 +27,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.appCompat)
-    implementation(libs.coreKtx)
+    implementation(libs.bundles.android)
     implementation(libs.material)
 }
