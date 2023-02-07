@@ -25,6 +25,9 @@ coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 #endregion Google
 
+[bundles]
+android = ["appCompat", "coreKtx"]
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidApplication" }
 androidLibrary = { id = "com.android.library", version.ref = "androidLibrary" }
