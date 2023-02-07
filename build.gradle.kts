@@ -4,6 +4,19 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.7.21" apply false
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+    dependencies {
+
+        classpath(":build-logic")
+    }
+}
+
+
 allprojects {
     repositories {
         google()
