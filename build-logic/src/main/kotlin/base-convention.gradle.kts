@@ -18,11 +18,6 @@ android {
         versionCode = Configuration.Version.VERSION_CODE
         versionName = Configuration.Version.VERSION_NAME
     }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
