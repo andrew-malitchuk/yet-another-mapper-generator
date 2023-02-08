@@ -7,4 +7,6 @@ import kotlin.reflect.KClass
 annotation class YAMG(
     val from: KClass<BaseMapperModel>,
     val to: KClass<BaseMapperModel>,
+    val mappingStrategy: MappingStrategyEnum = MappingStrategyEnum.ORDER,
+    val onConflict: OnConflictStrategy = OnConflictStrategy.NULLABLE
 )
