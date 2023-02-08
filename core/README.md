@@ -26,6 +26,22 @@
 
 ## :yamg:core
 
+## Structure
+
+### Models 
+
+According to Clean Architecture, there are three levels/layers of models - Data, Domain and UI.
+
+Each of them has own presentation in YAMG.
+
+> To avoid problems in naming, each levels model has "unique" (i hope) naming patter `<Layer>MapperModel`.
+
+Also, there are a base model - `BaseMapperModel`.
+
+So, hierarchy diagram is follow:
+
+// **TODO:** hierarchy diagram
+
 
 ## License
 
