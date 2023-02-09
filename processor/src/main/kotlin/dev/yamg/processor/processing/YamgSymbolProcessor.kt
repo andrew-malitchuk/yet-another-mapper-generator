@@ -5,6 +5,7 @@ import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.ksp.writeTo
 import dev.yamg.core.anotation.Foobar
 import dev.yamg.core.model.DomainMapperModel
@@ -48,25 +49,98 @@ class YamgSymbolProcessor(
             val targetClass = UiMapperModel::class
 
 
+            val from = classDeclaration.superTypes.first()
+                .resolve().arguments.first()?.type?.resolve()?.declaration
+            val to = classDeclaration.superTypes.first()
+                .resolve().arguments.elementAtOrNull(1)?.type?.resolve()?.declaration
+
+            val fileName = "_${from}To${to}ModelMapper"
+//
 //            if (classDeclaration.classKind != ClassKind.INTERFACE) {
 //                logger.error("Only interface can be annotated with @Function", classDeclaration)
 //                return
 //            }
 
+            val foo = FileSpec.builder("dev.yamg.app", "$fileName")
+                .addType(
+                    TypeSpec
+                        .classBuilder(fileName)
+                        .addSuperinterface(
+                            ClassName(
+                                "dev.yamg.core.mapper.model", "DomainUiModelMapper"
+                            ).parameterizedBy(
+                                ClassName(
+                                    "dev.yamg.core.model", "DomainMapperModel"
+                                ),
+                                ClassName(
+                                    "dev.yamg.core.model", "UiMapperModel"
+                                )
+                            )
+                        )
+                        .addFunction(
+                            FunSpec
+                                .builder("mapTo")
+                                .addModifiers(KModifier.OVERRIDE)
+                                .addParameter(
+                                    "from",
+                                    ClassName(
+                                        "dev.yamg.core.model", "DomainMapperModel"
+                                    )
+                                )
+                                .returns(
+                                    ClassName(
+                                        "dev.yamg.core.model", "UiMapperModel"
+                                    ),
+                                )
+                                .addStatement(
+                                    "return Any()"
+                                )
+                                .build()
+                        )
+                        .addFunction(
+                            FunSpec
+                                .builder("mapFrom")
+                                .addModifiers(KModifier.OVERRIDE)
+                                .addParameter(
+                                    "to",
+                                    ClassName(
+                                        "dev.yamg.core.model", "UiMapperModel"
+                                    )
+                                )
+                                .returns(
+                                    ClassName(
+                                        "dev.yamg.core.model", "DomainMapperModel"
+                                    ),
+                                )
+                                .addStatement(
+                                    "return Any()"
+                                )
+                                .build()
+                        ).build()
+                ).build()
 
-            val foo = FileSpec.builder("dev.yamg.app", "${parentClass}Ext")
-                .addFunction(
-                    FunSpec
-                        .builder("toFoo")
-                        .receiver(parentClass)
-                        .returns(targetClass)
-                        .addStatement("var a = 1")
-                        .addStatement("return UiMapperModel()")
-                        .build()
-                )
-                .build()
 
             foo.writeTo(codeGenerator, Dependencies(true))
+
+
+//            val bar = FileSpec.builder("dev.yamg.app", "${from}Ext")
+//                .addFunction(
+//                    FunSpec
+//                        .builder("toFoo")
+//                        .receiver(
+//                            ClassName(
+//                                "",
+//                                from.toString()
+//                            )
+//                        )
+//                        .returns(targetClass)
+//                        .addStatement("var a = 1")
+//                        .addStatement("return UiMapperModel()")
+//                        .build()
+//                )
+//                .build()
+//
+//            bar.writeTo(codeGenerator, Dependencies(true))
 
         }
 
