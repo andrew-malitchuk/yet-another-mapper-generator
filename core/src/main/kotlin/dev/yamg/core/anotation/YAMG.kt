@@ -13,4 +13,6 @@ annotation class Yamg(
 )
 
 @Target(AnnotationTarget.CLASS)
-annotation class Foobar(val foobar: String)
+annotation class Foobar(
+    val targetClass: KClass<out BaseMapperModel>,
+)

@@ -1,9 +1,14 @@
 package dev.yamg.processor.processing
 
+import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ksp.writeTo
 import dev.yamg.core.anotation.Foobar
+import dev.yamg.core.model.DomainMapperModel
+import dev.yamg.core.model.UiMapperModel
 import java.io.OutputStream
 
 class YamgSymbolProcessor(
@@ -11,74 +16,58 @@ class YamgSymbolProcessor(
     private val logger: KSPLogger
 ) : SymbolProcessor {
 
+
+    private var className: String? = null
+    private var targetClassName: String? = null
+
+
+    @OptIn(KspExperimental::class)
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val mapperDeclarations = resolver.getSymbolsWithAnnotation(
+        val symbols = resolver.getSymbolsWithAnnotation(
             Foobar::class.java.name
         ).filterIsInstance<KSClassDeclaration>().distinct()
-        if (!mapperDeclarations.iterator().hasNext()) return emptyList()
-
-        val file: OutputStream = codeGenerator.createNewFile(
-            dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
-            packageName = "dev.yamg.processor",
-            fileName = "GeneratedFunctions"
-        )
-        file += "package com.yamg.lib\n"
-
-        mapperDeclarations.forEach { it.accept(Visitor(file), Unit) }
-
-        file.close()
-        val unableToProcess = mapperDeclarations.filterNot { it.validate() }.toList()
-        return unableToProcess
-
+        if (!symbols.iterator().hasNext()) return emptyList()
+        symbols.forEach { it.accept(Visitor(resolver, logger), Unit) }
+        return symbols.filterNot { it.validate() }.toList()
     }
 
     operator fun OutputStream.plusAssign(str: String) {
         this.write(str.toByteArray())
     }
 
-    inner class Visitor(private val file: OutputStream) : KSVisitorVoid() {
+    inner class Visitor(
+        private val resolver: Resolver,
+        private val logger: KSPLogger
+    ) :
+        KSVisitorVoid() {
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-            if (classDeclaration.classKind != ClassKind.INTERFACE) {
-                logger.error("Only interface can be annotated with @Function", classDeclaration)
-                return
-            }
 
-            // Getting the @Function annotation object.
-            val annotation: KSAnnotation = classDeclaration.annotations.first {
-                it.shortName.asString() == Foobar::class.simpleName
-            }
 
-            // Getting the 'name' argument object from the @Function.
-            val nameArgument: KSValueArgument = annotation.arguments
-                .first { arg -> arg.name?.asString() == "foobar" }
+            val parentClass = DomainMapperModel::class
+            val targetClass = UiMapperModel::class
 
-            // Getting the value of the 'name' argument.
-            val functionName = nameArgument.value as String
 
-            // Getting the list of member properties of the annotated interface.
-            val properties: Sequence<KSPropertyDeclaration> = classDeclaration.getAllProperties()
-                .filter { it.validate() }
+//            if (classDeclaration.classKind != ClassKind.INTERFACE) {
+//                logger.error("Only interface can be annotated with @Function", classDeclaration)
+//                return
+//            }
 
-            // Generating function signature.
-            file += "\n"
-            if (properties.iterator().hasNext()) {
-                file += "fun $functionName(\n"
 
-                // Iterating through each property to translate them to function arguments.
-                properties.forEach { prop ->
-                    visitPropertyDeclaration(prop, Unit)
-                }
-                file += ") {\n"
+            val foo = FileSpec.builder("dev.yamg.app", "${parentClass}Ext")
+                .addFunction(
+                    FunSpec
+                        .builder("toFoo")
+                        .receiver(parentClass)
+                        .returns(targetClass)
+                        .addStatement("var a = 1")
+                        .addStatement("return UiMapperModel()")
+                        .build()
+                )
+                .build()
 
-            } else {
-                // Otherwise, generating function with no args.
-                file += "fun $functionName() {\n"
-            }
+            foo.writeTo(codeGenerator, Dependencies(true))
 
-            // Generating function body
-            file += "    println(\"Hello from $functionName\")\n"
-            file += "}\n"
         }
 
         override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
@@ -87,5 +76,10 @@ class YamgSymbolProcessor(
         override fun visitTypeArgument(typeArgument: KSTypeArgument, data: Unit) {
         }
     }
+
+    //
+
+    //
+
 
 }
