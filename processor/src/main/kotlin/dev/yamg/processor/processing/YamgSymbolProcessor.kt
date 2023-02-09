@@ -1,6 +1,7 @@
 package dev.yamg.processor.processing
 
 import com.google.devtools.ksp.KspExperimental
+import com.google.devtools.ksp.getAnnotationsByType
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
@@ -42,8 +43,10 @@ class YamgSymbolProcessor(
     ) :
         KSVisitorVoid() {
 
+        @OptIn(KspExperimental::class)
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
 
+            val clazz = classDeclaration.getAnnotationsByType(Foobar::class).single().targetClass
 
             val parentClass = DomainMapperModel::class
             val targetClass = UiMapperModel::class
@@ -70,10 +73,12 @@ class YamgSymbolProcessor(
                                 "dev.yamg.core.mapper.model", "DomainUiModelMapper"
                             ).parameterizedBy(
                                 ClassName(
-                                    "dev.yamg.core.model", "DomainMapperModel"
+//                                    "dev.yamg.core.model", "DomainMapperModel"
+                                    clazz.javaObjectType.packageName, "DomainMapperModel"
                                 ),
                                 ClassName(
-                                    "dev.yamg.core.model", "UiMapperModel"
+//                                    "dev.yamg.core.model", "UiMapperModel"
+                                    clazz.javaObjectType.packageName, "UiMapperModel"
                                 )
                             )
                         )
@@ -84,12 +89,14 @@ class YamgSymbolProcessor(
                                 .addParameter(
                                     "from",
                                     ClassName(
-                                        "dev.yamg.core.model", "DomainMapperModel"
+//                                        "dev.yamg.core.model", "DomainMapperModel"
+                                                clazz.javaObjectType.packageName, "DomainMapperModel"
                                     )
                                 )
                                 .returns(
                                     ClassName(
-                                        "dev.yamg.core.model", "UiMapperModel"
+//                                        "dev.yamg.core.model", "UiMapperModel"
+                                        clazz.javaObjectType.packageName, "UiMapperModel"
                                     ),
                                 )
                                 .addStatement(
@@ -104,12 +111,14 @@ class YamgSymbolProcessor(
                                 .addParameter(
                                     "to",
                                     ClassName(
-                                        "dev.yamg.core.model", "UiMapperModel"
+//                                        "dev.yamg.core.model", "UiMapperModel"
+                                        clazz.javaObjectType.packageName, "UiMapperModel"
                                     )
                                 )
                                 .returns(
                                     ClassName(
-                                        "dev.yamg.core.model", "DomainMapperModel"
+//                                        "dev.yamg.core.model", "DomainMapperModel"
+                                        clazz.javaObjectType.packageName, "DomainMapperModel"
                                     ),
                                 )
                                 .addStatement(
