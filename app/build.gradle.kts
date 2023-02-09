@@ -2,6 +2,7 @@
 
 plugins {
     id("application-convention")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -14,7 +15,13 @@ android {
     }
 }
 
+ksp {
+    arg("ignoreGenericArgs", "false")
+}
+
 dependencies {
     implementation(libs.bundles.android)
     implementation(libs.material)
+    implementation(project(":core"))
+    ksp(project(":processor"))
 }

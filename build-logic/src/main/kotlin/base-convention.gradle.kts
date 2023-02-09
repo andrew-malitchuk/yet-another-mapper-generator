@@ -1,8 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
-import gradle.kotlin.dsl.accessors._e94137ebeba9f7b13362602a5c1e987f.android
-import gradle.kotlin.dsl.accessors._e94137ebeba9f7b13362602a5c1e987f.java
-import gradle.kotlin.dsl.accessors._e94137ebeba9f7b13362602a5c1e987f.kotlinOptions
+import gradle.kotlin.dsl.accessors._6d51757f9d240b053e9d04252edc91dd.android
+import gradle.kotlin.dsl.accessors._6d51757f9d240b053e9d04252edc91dd.java
+import gradle.kotlin.dsl.accessors._6d51757f9d240b053e9d04252edc91dd.kotlinOptions
 
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
