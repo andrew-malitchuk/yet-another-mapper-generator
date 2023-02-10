@@ -16,3 +16,11 @@ annotation class Yamg(
 annotation class Foobar(
     val targetClass: KClass<out BaseMapperModel>,
 )
+
+@Target(AnnotationTarget.CLASS)
+annotation class Foo(
+//    val targetClass: KClass<out BaseMapperModel>,
+    val targetClass: Array<KClass<*>> = [],
+)
+
+

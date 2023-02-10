@@ -2,9 +2,10 @@ package dev.yamg.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import dev.yamg.core.mapper.model.DomainUiModelMapper
+import dev.yamg.app.ui.FooUiModel
+import dev.yamg.core.anotation.ExtensiveModel
+import dev.yamg.core.anotation.ExtensiveSealed
 import dev.yamg.core.model.DomainMapperModel
-import dev.yamg.core.model.UiMapperModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,14 +14,24 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-data class FooUiModel(var foobar: String) : UiMapperModel
+//data class FooUiModel(var foobar: String) : UiMapperModel
+//
+//
+//@dev.yamg.core.anotation.Foobar(
+//    targetClass = DomainMapperModel::class
+//)
+//abstract class Foobar : DomainUiModelMapper<DomainMapperModel, UiMapperModel>
 
 
-@dev.yamg.core.anotation.Foobar(
-    targetClass = DomainMapperModel::class
+
+//@Foo(
+//    targetClass = [FooUiModel::class]
+//)
+@ExtensiveSealed(
+    models = [
+        ExtensiveModel(FooUiModel::class),
+    ]
 )
-abstract class Foobar : DomainUiModelMapper<DomainMapperModel, UiMapperModel>
-
-
+data class FooDomain(val foo: String):DomainMapperModel
 
 

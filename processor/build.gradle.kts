@@ -41,6 +41,7 @@ dependencies {
     implementation("com.google.devtools.ksp:symbol-processing-api:1.8.10-1.0.9")
     implementation("com.google.devtools.ksp:symbol-processing:1.8.10-1.0.9")
     implementation("com.squareup:kotlinpoet-ksp:1.12.0")
+    implementation(kotlin("stdlib"))
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
 
