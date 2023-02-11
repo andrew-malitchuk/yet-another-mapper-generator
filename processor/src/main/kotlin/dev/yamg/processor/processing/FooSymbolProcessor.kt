@@ -35,7 +35,7 @@ class FooSymbolProcessor(
         @OptIn(KspExperimental::class)
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
 
-            val res=foo(classDeclaration)
+            val res = foo(classDeclaration)
 
 //            val className = ClassName.bestGuess("${res[0].type.toString()}.${res[0].name}")
 
@@ -70,7 +70,7 @@ class FooSymbolProcessor(
     }
 
     //
-    fun foo(declaration:KSClassDeclaration): List<ExtensiveModelBag> {
+    fun foo(declaration: KSClassDeclaration): List<ExtensiveModelBag> {
         val arguments = declaration.annotations.first {
             it.annotationType.resolve().declaration.qualifiedName?.asString() == ExtensiveSealed::class.qualifiedName
         }.arguments.first { it.name?.asString() == ExtensiveSealed.PARAM_MODELS }.value
