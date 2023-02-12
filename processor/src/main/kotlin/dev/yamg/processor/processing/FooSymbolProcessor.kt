@@ -9,6 +9,7 @@ import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 import dev.yamg.core.anotation.Foo
 import dev.yamg.processor.extensions.getClassFromAnnotation
+import dev.yamg.processor.extensions.getClassName
 
 class FooSymbolProcessor(
     private val codeGenerator: CodeGenerator,
@@ -51,18 +52,12 @@ class FooSymbolProcessor(
         private val logger: KSPLogger
     ) : KSVisitorVoid() {
 
-        @OptIn(KspExperimental::class)
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-
-
             //
             val targetClass = resolver.getClassFromAnnotation(Foo::class, "targetClass", logger)
-            val clazz =
-                foo?.qualifiedName!!.getQualifier() + "." + foo?.qualifiedName!!.getShortName()
-            val className = ClassName.bestGuess(clazz)
+            val className =targetClass?.getClassName()
             logger.error("bar: $className")
             //
-
             val parentClass = classDeclaration.toClassName().toString()
             val fileName = "${parentClass}Ext"
             val returns = ClassName.bestGuess("dev.yamg.core.model.UiMapperModel")
@@ -73,8 +68,8 @@ class FooSymbolProcessor(
                         .builder("toFoo")
                         .receiver(
                             ClassName(
-                                className.packageName,
-                                className.simpleName
+                                className!!.packageName,
+                                className!!.simpleName
                             )
                         )
                         .returns(returns)
