@@ -5,7 +5,6 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.validate
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ksp.toClassName
@@ -39,33 +38,30 @@ class FooSymbolProcessor(
             //
             val parentClass = classDeclaration.toClassName()
             val targetClass = resolver.getClassFromAnnotation(Foo::class, "targetClass", logger)
+            val className = targetClass?.getClassName()
 
-            if (targetClass == null) {
+            if (targetClass == null || className == null) {
                 logger.exception(NullPointerException("Something wrong with parsing"))
             }
 
-            val methodName = classDeclaration.getFieldValueFromAnnotation(Foo::class, "methodName")?.toString()
-                ?: String.format(DEFAULT_EXTENSION_METHOD_NAME, targetClass?.toClassName()?.simpleName)
-            logger.error("methodName: $methodName")
+            val methodName =
+                (classDeclaration.getFieldValueFromAnnotation(Foo::class, "methodName")?.value as? String?)
+                    ?: String.format(
+                        DEFAULT_EXTENSION_METHOD_NAME,
+                        targetClass?.toClassName()?.simpleName
+                    )
 
-            val fileName = "${parentClass}Ext"
-
-            val className = targetClass?.getClassName()
+            val fileName = "${parentClass.simpleName}Ext"
             //
 
             val extensionMethod = FileSpec.builder("dev.yamg.app", fileName)
                 .addFunction(
                     FunSpec
                         .builder(methodName)
-                        .receiver(
-                            ClassName(
-                                className!!.packageName,
-                                className!!.simpleName
-                            )
-                        )
-//                        .returns(returns)
+                        .receiver(parentClass)
+                        .returns(className!!)
                         .addStatement("var a = 1")
-                        .addStatement("return UiMapperModel()")
+                        .addStatement("return ${className.simpleName}()")
                         .build()
                 )
                 .build()
