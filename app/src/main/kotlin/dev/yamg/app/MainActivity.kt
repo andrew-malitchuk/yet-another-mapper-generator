@@ -17,6 +17,6 @@ class MainActivity : AppCompatActivity() {
     targetClass = FooUiModel::class,
     methodName = "toUiModel"
 )
-data class FooDomain(val foo: String) : DomainMapperModel
+data class FooDomain(val fieldOne: String) : DomainMapperModel
 
 
