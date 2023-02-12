@@ -13,25 +13,10 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-//data class FooUiModel(var foobar: String) : UiMapperModel
-//
-//
-//@dev.yamg.core.anotation.Foobar(
-//    targetClass = DomainMapperModel::class
-//)
-//abstract class Foobar : DomainUiModelMapper<DomainMapperModel, UiMapperModel>
-
-
-
 @Foo(
-//    targetClass = FooDomainModel::class
-    targetClass = FooUiModel::class
+    targetClass = FooUiModel::class,
+    methodName = "toUiModel"
 )
-//@ExtensiveSealed(
-//    models = [
-//        ExtensiveModel(type=FooUiModel::class),
-//    ]
-//)
-data class FooDomain(val foo: String):DomainMapperModel
+data class FooDomain(val foo: String) : DomainMapperModel
 
 

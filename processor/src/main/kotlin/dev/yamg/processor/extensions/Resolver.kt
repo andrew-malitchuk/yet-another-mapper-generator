@@ -11,6 +11,7 @@ import kotlin.reflect.KClass
  *
  */
 // TODO: add doc
+// TODO: somehow extract field name
 fun Resolver.getClassFromAnnotation(
     annotationClass: KClass<*>,
     fieldName: String,

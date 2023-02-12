@@ -1,48 +1,31 @@
 package dev.yamg.processor.processing
 
-import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.*
-import com.google.devtools.ksp.symbol.*
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.validate
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 import dev.yamg.core.anotation.Foo
 import dev.yamg.processor.extensions.getClassFromAnnotation
 import dev.yamg.processor.extensions.getClassName
+import dev.yamg.processor.extensions.getFieldValueFromAnnotation
 
+// TODO: pass package for ksp-gen files via arguments from build.gradle
 class FooSymbolProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger
 ) : SymbolProcessor {
 
-    private lateinit var startupType: KSType
-
-    @OptIn(KspExperimental::class)
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(
             Foo::class.java.name
         ).filterIsInstance<KSClassDeclaration>().distinct()
         if (!symbols.iterator().hasNext()) return emptyList()
-
-        //
-//        val foo = resolver.getSymbolsWithAnnotation("dev.yamg.core.anotation.Foo")
-//            .map { ksAnnotated ->
-//                val args = ksAnnotated.annotations.single {
-//                    it.shortName.asString() == "Foo" && it.annotationType.resolve().declaration.qualifiedName?.asString() == "dev.yamg.core.anotation.Foo"
-//                }.arguments
-//                val consumerType =
-//                    args.single { it.name?.asString() == "targetClass" }.value as KSType
-//                val consumerDeclaration = consumerType.declaration as KSClassDeclaration // etc
-//                return@map consumerDeclaration
-//            }
-//        logger.error("foo: ${(foo.first().qualifiedName!!.getQualifier())}")
-//        logger.error("foo: ${(foo.first().qualifiedName!!.getShortName())}")
-//        val clazz =
-//            foo.first().qualifiedName!!.getQualifier() +"."+ foo.first().qualifiedName!!.getShortName()
-//        val className = ClassName.bestGuess(clazz)
-//        logger.error("bar: $className")
-        //
         symbols.forEach { it.accept(FooVisitor(resolver, logger), Unit) }
         return symbols.filterNot { it.validate() }.toList()
     }
@@ -54,34 +37,46 @@ class FooSymbolProcessor(
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
             //
+            val parentClass = classDeclaration.toClassName()
             val targetClass = resolver.getClassFromAnnotation(Foo::class, "targetClass", logger)
-            val className =targetClass?.getClassName()
-            logger.error("bar: $className")
-            //
-            val parentClass = classDeclaration.toClassName().toString()
-            val fileName = "${parentClass}Ext"
-            val returns = ClassName.bestGuess("dev.yamg.core.model.UiMapperModel")
 
-            val bar = FileSpec.builder("dev.yamg.app", fileName)
+            if (targetClass == null) {
+                logger.exception(NullPointerException("Something wrong with parsing"))
+            }
+
+            val methodName = classDeclaration.getFieldValueFromAnnotation(Foo::class, "methodName")?.toString()
+                ?: String.format(DEFAULT_EXTENSION_METHOD_NAME, targetClass?.toClassName()?.simpleName)
+            logger.error("methodName: $methodName")
+
+            val fileName = "${parentClass}Ext"
+
+            val className = targetClass?.getClassName()
+            //
+
+            val extensionMethod = FileSpec.builder("dev.yamg.app", fileName)
                 .addFunction(
                     FunSpec
-                        .builder("toFoo")
+                        .builder(methodName)
                         .receiver(
                             ClassName(
                                 className!!.packageName,
                                 className!!.simpleName
                             )
                         )
-                        .returns(returns)
+//                        .returns(returns)
                         .addStatement("var a = 1")
                         .addStatement("return UiMapperModel()")
                         .build()
                 )
                 .build()
 
-            bar.writeTo(codeGenerator, Dependencies(true))
+            extensionMethod.writeTo(codeGenerator, Dependencies(true))
         }
 
+    }
+
+    companion object {
+        const val DEFAULT_EXTENSION_METHOD_NAME = "to%s"
     }
 
 
