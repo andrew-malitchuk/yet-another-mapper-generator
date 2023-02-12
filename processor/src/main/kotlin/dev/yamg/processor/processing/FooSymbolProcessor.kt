@@ -36,7 +36,6 @@ class FooSymbolProcessor(
     ) : KSVisitorVoid() {
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-            //
             val parentClass = classDeclaration.toClassName()
             val targetClass = resolver.getClassFromAnnotation(Foo::class, "targetClass", logger)
             val className = targetClass?.getClassName()
@@ -55,8 +54,6 @@ class FooSymbolProcessor(
                     )
 
             val fileName = "${parentClass.simpleName}Ext"
-
-            //
             val fooGenerator = FooGenerator(
                 classDeclaration,
                 codeGenerator,
@@ -67,9 +64,7 @@ class FooSymbolProcessor(
                 logger
             )
             fooGenerator.build()
-            //
         }
-
     }
 
     companion object {

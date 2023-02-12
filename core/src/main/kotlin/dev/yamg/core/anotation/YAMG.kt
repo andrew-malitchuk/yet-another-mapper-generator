@@ -11,16 +11,3 @@ annotation class Yamg(
     val mappingStrategy: MappingStrategyEnum = MappingStrategyEnum.ORDER,
     val onConflict: OnConflictStrategy = OnConflictStrategy.NULLABLE
 )
-
-@Target(AnnotationTarget.CLASS)
-annotation class Foobar(
-    val targetClass: KClass<out BaseMapperModel>,
-)
-
-@Target(AnnotationTarget.CLASS)
-annotation class Foo(
-    val targetClass: KClass<out BaseMapperModel>,
-    val methodName:String="methodName"
-)
-
-

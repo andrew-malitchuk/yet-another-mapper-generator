@@ -26,6 +26,7 @@ class FooGenerator(
                     .builder(methodName)
                     .receiver(parentClass)
                     .returns(className)
+                    // TODO: format string (a.k.a pretty print)
                     .addStatement(
                         "return ${className.simpleName}(" +
                                 getClassField() +
