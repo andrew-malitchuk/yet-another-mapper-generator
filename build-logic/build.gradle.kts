@@ -9,6 +9,6 @@ repositories {
 }
 
 dependencies {
-    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+    api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
     api("com.android.tools.build:gradle:7.0.0")
 }
