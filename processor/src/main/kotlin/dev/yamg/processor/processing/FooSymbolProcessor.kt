@@ -3,13 +3,11 @@ package dev.yamg.processor.processing
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
-import com.google.devtools.ksp.symbol.impl.binary.KSAnnotationDescriptorImpl
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
-import dev.yamg.core.anotation.ExtensiveModel
-import dev.yamg.core.anotation.ExtensiveSealed
+import dev.yamg.core.anotation.Foo
 
 class FooSymbolProcessor(
     private val codeGenerator: CodeGenerator,
@@ -18,11 +16,31 @@ class FooSymbolProcessor(
 
     private lateinit var startupType: KSType
 
+    @OptIn(KspExperimental::class)
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(
-            ExtensiveSealed::class.java.name
+            Foo::class.java.name
         ).filterIsInstance<KSClassDeclaration>().distinct()
         if (!symbols.iterator().hasNext()) return emptyList()
+
+        //
+//        val foo = resolver.getSymbolsWithAnnotation("dev.yamg.core.anotation.Foo")
+//            .map { ksAnnotated ->
+//                val args = ksAnnotated.annotations.single {
+//                    it.shortName.asString() == "Foo" && it.annotationType.resolve().declaration.qualifiedName?.asString() == "dev.yamg.core.anotation.Foo"
+//                }.arguments
+//                val consumerType =
+//                    args.single { it.name?.asString() == "targetClass" }.value as KSType
+//                val consumerDeclaration = consumerType.declaration as KSClassDeclaration // etc
+//                return@map consumerDeclaration
+//            }
+//        logger.error("foo: ${(foo.first().qualifiedName!!.getQualifier())}")
+//        logger.error("foo: ${(foo.first().qualifiedName!!.getShortName())}")
+//        val clazz =
+//            foo.first().qualifiedName!!.getQualifier() +"."+ foo.first().qualifiedName!!.getShortName()
+//        val className = ClassName.bestGuess(clazz)
+//        logger.error("bar: $className")
+        //
         symbols.forEach { it.accept(FooVisitor(resolver, logger), Unit) }
         return symbols.filterNot { it.validate() }.toList()
     }
@@ -35,13 +53,29 @@ class FooSymbolProcessor(
         @OptIn(KspExperimental::class)
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
 
-            val res = foo(classDeclaration)
 
-//            val className = ClassName.bestGuess("${res[0].type.toString()}.${res[0].name}")
+            //
+            val foo = resolver.getSymbolsWithAnnotation("dev.yamg.core.anotation.Foo")
+                .map { ksAnnotated ->
+                    val args = ksAnnotated.annotations.single {
+                        it.shortName.asString() == "Foo" && it.annotationType.resolve().declaration.qualifiedName?.asString() == "dev.yamg.core.anotation.Foo"
+                    }.arguments
+                    val consumerType =
+                        args.single { it.name?.asString() == "targetClass" }.value as KSType
+                    val consumerDeclaration = consumerType.declaration as KSClassDeclaration // etc
+                    return@map consumerDeclaration
+                }
+            logger.error("foo: ${(foo.first().qualifiedName!!.getQualifier())}")
+            logger.error("foo: ${(foo.first().qualifiedName!!.getShortName())}")
+            val clazz =
+                foo.first().qualifiedName!!.getQualifier() +"."+ foo.first().qualifiedName!!.getShortName()
+            val className = ClassName.bestGuess(clazz)
+            logger.error("bar: $className")
+            //
 
             val parentClass = classDeclaration.toClassName().toString()
-
             val fileName = "${parentClass}Ext"
+            val returns = ClassName.bestGuess("dev.yamg.core.model.UiMapperModel")
 
             val bar = FileSpec.builder("dev.yamg.app", fileName)
                 .addFunction(
@@ -49,15 +83,11 @@ class FooSymbolProcessor(
                         .builder("toFoo")
                         .receiver(
                             ClassName(
-//                                targetClass.java.packageName,
-//                                targetClass.simpleName.toString(),
-//                                className.packageName,
-//                                className.simpleName
-                                res[0].type.toString(),
-                                res[0].name
+                                className.packageName,
+                                className.simpleName
                             )
                         )
-//                        .returns(targetClass)
+                        .returns(returns)
                         .addStatement("var a = 1")
                         .addStatement("return UiMapperModel()")
                         .build()
@@ -68,34 +98,6 @@ class FooSymbolProcessor(
         }
 
     }
-
-    //
-    fun foo(declaration: KSClassDeclaration): List<ExtensiveModelBag> {
-        val arguments = declaration.annotations.first {
-            it.annotationType.resolve().declaration.qualifiedName?.asString() == ExtensiveSealed::class.qualifiedName
-        }.arguments.first { it.name?.asString() == ExtensiveSealed.PARAM_MODELS }.value
-
-        // Extract a list of KSType from the class type of the array of `ExtensiveModel`.
-        val modelsKSTypesDescriptor =
-            (arguments as ArrayList<*>).map { it as KSAnnotationDescriptorImpl }
-        val models = modelsKSTypesDescriptor.map { kSAnnotationDescriptor ->
-            val name = kSAnnotationDescriptor.arguments.first { KSValueArgument ->
-                KSValueArgument.name?.asString() == ExtensiveModel.PARAM_NAME
-            }.value as String
-
-            val type = kSAnnotationDescriptor.arguments.first { KSValueArgument ->
-                KSValueArgument.name?.asString() == ExtensiveModel.PARAM_TYPE
-            }.value as KSType
-            ExtensiveModelBag(name = name, type = type)
-        }.distinct()
-        return models
-    }
-
-    data class ExtensiveModelBag(
-        val name: String,
-        val type: KSType
-    )
-    //
 
 
 }

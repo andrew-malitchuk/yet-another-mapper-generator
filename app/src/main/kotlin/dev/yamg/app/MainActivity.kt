@@ -3,8 +3,7 @@ package dev.yamg.app
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dev.yamg.app.ui.FooUiModel
-import dev.yamg.core.anotation.ExtensiveModel
-import dev.yamg.core.anotation.ExtensiveSealed
+import dev.yamg.core.anotation.Foo
 import dev.yamg.core.model.DomainMapperModel
 
 class MainActivity : AppCompatActivity() {
@@ -24,14 +23,15 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//@Foo(
-//    targetClass = [FooUiModel::class]
-//)
-@ExtensiveSealed(
-    models = [
-        ExtensiveModel(FooUiModel::class),
-    ]
+@Foo(
+//    targetClass = FooDomainModel::class
+    targetClass = FooUiModel::class
 )
+//@ExtensiveSealed(
+//    models = [
+//        ExtensiveModel(type=FooUiModel::class),
+//    ]
+//)
 data class FooDomain(val foo: String):DomainMapperModel
 
 

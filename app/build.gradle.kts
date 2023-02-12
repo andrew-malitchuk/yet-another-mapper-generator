@@ -13,6 +13,11 @@ android {
             isMinifyEnabled = false
         }
     }
+    sourceSets {
+        getByName("debug") {
+            java.srcDir(File("build/generated/ksp/debug/kotlin"))
+        }
+    }
 }
 
 ksp {

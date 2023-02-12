@@ -19,8 +19,8 @@ annotation class Foobar(
 
 @Target(AnnotationTarget.CLASS)
 annotation class Foo(
-//    val targetClass: KClass<out BaseMapperModel>,
-    val targetClass: Array<KClass<*>> = [],
+    val targetClass: KClass<out BaseMapperModel>,
+//    val targetClass: Array<KClass<*>> = [],
 )
 
 
