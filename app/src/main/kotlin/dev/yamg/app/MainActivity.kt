@@ -11,15 +11,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
+        val fooDomain = FooDomain("","")
+        fooDomain.toUiModel()
     }
 }
 
 @Foo(
     targetClass = FooUiModel::class,
-    methodName = "toUiModel"
+    methodName = "toUiModel",
+    excludeFields = ["fieldTwo"]
 )
-data class FooDomain(val fieldOne: String) : DomainMapperModel
+data class FooDomain(
+    val fieldOne: String,
+    val fieldTwo: String,
+) : DomainMapperModel
 
 

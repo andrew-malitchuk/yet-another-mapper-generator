@@ -6,6 +6,10 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.CLASS)
 annotation class Foo(
     val targetClass: KClass<out BaseMapperModel>,
-    val methodName: String = "methodName"
+    val methodName: String = "methodName",
+    /**
+     * Fields to exclude in parent class
+     */
+    val excludeFields: Array<String> = [],
 )
 

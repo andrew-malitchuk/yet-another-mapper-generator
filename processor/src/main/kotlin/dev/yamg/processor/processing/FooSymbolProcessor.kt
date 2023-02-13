@@ -53,6 +53,13 @@ class FooSymbolProcessor(
                         targetClass?.toClassName()?.simpleName
                     )
 
+            val excludeFields = (classDeclaration.getFieldValueFromAnnotation(
+                Foo::class,
+                "excludeFields"
+            )?.value as List<String>)
+
+//            logger.error("foo: ${excludeFields.toString()}")
+
             val fileName = "${parentClass.simpleName}Ext"
             val fooGenerator = FooGenerator(
                 classDeclaration,
@@ -61,6 +68,7 @@ class FooSymbolProcessor(
                 fileName,
                 parentClass,
                 className!!,
+                excludeFields,
                 logger
             )
             fooGenerator.build()

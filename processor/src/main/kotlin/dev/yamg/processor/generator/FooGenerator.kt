@@ -16,6 +16,7 @@ class FooGenerator(
     private val fileName: String,
     private val parentClass: ClassName,
     private val className: ClassName,
+    private val excludeFields: List<String>?=null,
     private val logger: KSPLogger
 ) {
 
@@ -44,7 +45,13 @@ class FooGenerator(
         val params = classDeclaration.primaryConstructor?.parameters
         var result = ""
         params?.forEach {
-            result += "${it.name?.getShortName()},\n"
+            val field = it.name?.getShortName()
+            if (!excludeFields.isNullOrEmpty()) {
+                if (!excludeFields.contains(field)) {
+                    result += "$field,\n"
+                }
+            }
+//            result += "${it.name?.getShortName()},\n"
         }
         return result
     }
