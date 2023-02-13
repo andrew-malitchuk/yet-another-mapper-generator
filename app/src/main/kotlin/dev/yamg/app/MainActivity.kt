@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     excludeFields = ["fieldTwo"]
 )
 data class FooDomain(
+//    @YamgFieldName("foobarField")
     val fieldOne: String,
     val fieldTwo: String,
 ) : DomainMapperModel

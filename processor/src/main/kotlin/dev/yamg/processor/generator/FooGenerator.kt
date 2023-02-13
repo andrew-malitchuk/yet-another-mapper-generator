@@ -8,6 +8,7 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ksp.writeTo
+import dev.yamg.processor.extensions.getAnnotation
 
 class FooGenerator(
     private val classDeclaration: KSClassDeclaration,
@@ -16,7 +17,7 @@ class FooGenerator(
     private val fileName: String,
     private val parentClass: ClassName,
     private val className: ClassName,
-    private val excludeFields: List<String>?=null,
+    private val excludeFields: List<String>? = null,
     private val logger: KSPLogger
 ) {
 
@@ -45,13 +46,13 @@ class FooGenerator(
         val params = classDeclaration.primaryConstructor?.parameters
         var result = ""
         params?.forEach {
+            val customFieldName = it.getAnnotation<String>("fieldName")
             val field = it.name?.getShortName()
             if (!excludeFields.isNullOrEmpty()) {
-                if (!excludeFields.contains(field)) {
-                    result += "$field,\n"
+                if (!excludeFields.contains(customFieldName ?: field)) {
+                    result += "${customFieldName ?: field},\n"
                 }
             }
-//            result += "${it.name?.getShortName()},\n"
         }
         return result
     }
