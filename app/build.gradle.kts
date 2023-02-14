@@ -21,7 +21,7 @@ android {
 }
 
 ksp {
-    arg("ignoreGenericArgs", "false")
+    arg("mappersPackageName", "io.demo.foobar")
 }
 
 dependencies {

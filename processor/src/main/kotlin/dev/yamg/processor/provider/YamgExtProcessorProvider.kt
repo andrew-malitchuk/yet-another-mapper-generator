@@ -3,13 +3,14 @@ package dev.yamg.processor.provider
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
-import dev.yamg.processor.processing.FooSymbolProcessor
+import dev.yamg.processor.processing.YamgExtSymbolProcessor
 
-class FooProcessorProvider : SymbolProcessorProvider {
+class YamgExtProcessorProvider : SymbolProcessorProvider {
 
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor =
-        FooSymbolProcessor(
+        YamgExtSymbolProcessor(
             codeGenerator = environment.codeGenerator,
+            options=environment.options,
             logger = environment.logger
         )
 
