@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dev.yamg.app.ui.FooUiModel
 import dev.yamg.core.anotation.YamgExt
 import dev.yamg.core.model.DomainMapperModel
-import io.demo.foobar.toUiModel
+import io.demo.foobar.toFooUiModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,13 +13,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val fooDomain = FooDomain("",1)
-        fooDomain.toUiModel()
+        fooDomain.toFooUiModel()
     }
 }
 
 @YamgExt(
     targetClass = FooUiModel::class,
-    methodName = "toUiModel",
+//    methodName = "toUiModel",
 //    excludeFields = ["fieldTwo"]
 )
 data class FooDomain(

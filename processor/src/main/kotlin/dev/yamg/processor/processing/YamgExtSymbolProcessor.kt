@@ -49,15 +49,18 @@ class YamgExtSymbolProcessor(
             if (targetClass == null || className == null) {
                 logger.exception(NullPointerException("Something wrong with parsing"))
             }
-            val methodName =
+            var methodName =
                 (classDeclaration.getFieldValueFromAnnotation(
                     YamgExt::class,
                     "methodName"
                 )?.value as? String?)
-                    ?: String.format(
-                        DEFAULT_EXTENSION_METHOD_NAME,
-                        targetClass?.toClassName()?.simpleName
-                    )
+
+            if (methodName.isNullOrEmpty()){
+                methodName= String.format(
+                    DEFAULT_EXTENSION_METHOD_NAME,
+                    targetClass?.toClassName()?.simpleName
+                )
+            }
 
             @Suppress("UNCHECKED_CAST") val excludeFields =
                 (classDeclaration.getFieldValueFromAnnotation(

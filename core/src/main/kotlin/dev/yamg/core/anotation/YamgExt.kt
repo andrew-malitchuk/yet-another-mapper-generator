@@ -15,7 +15,7 @@ annotation class YamgExt(
     /**
      * Extension method name
      */
-    val methodName: String = "methodName",
+    val methodName: String="",
     /**
      * Fields to exclude in parent class
      */
