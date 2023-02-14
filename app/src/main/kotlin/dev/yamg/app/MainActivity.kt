@@ -3,7 +3,7 @@ package dev.yamg.app
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dev.yamg.app.ui.FooUiModel
-import dev.yamg.core.anotation.Foo
+import dev.yamg.core.anotation.YamgExt
 import dev.yamg.core.model.DomainMapperModel
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Foo(
+@YamgExt(
     targetClass = FooUiModel::class,
     methodName = "toUiModel",
     excludeFields = ["fieldTwo"]
