@@ -20,11 +20,12 @@ class YamgExtGenerator(
     private val parentClass: ClassName,
     private val className: ClassName,
     private val excludeFields: List<String>? = null,
+    private val packageName: String,
     private val logger: KSPLogger
 ) {
 
     fun build() {
-        val extensionMethod = FileSpec.builder("dev.yamg.app", fileName)
+        val extensionMethod = FileSpec.builder(packageName, fileName)
             .addFunction(
                 FunSpec
                     .builder(methodName)

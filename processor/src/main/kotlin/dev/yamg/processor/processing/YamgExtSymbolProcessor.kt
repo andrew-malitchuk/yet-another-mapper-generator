@@ -18,14 +18,20 @@ import dev.yamg.processor.generator.YamgExtGenerator
 // TODO: pass package for ksp-gen files via arguments from build.gradle
 class YamgExtSymbolProcessor(
     private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
+    private val logger: KSPLogger,
+    private val options: Map<String, String>
 ) : SymbolProcessor {
+
+    var mappersPackageName:String=DEFAULT_MAPPERS_PACKAGE_NAME
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(
             YamgExt::class.java.name
         ).filterIsInstance<KSClassDeclaration>().distinct()
         if (!symbols.iterator().hasNext()) return emptyList()
+
+        mappersPackageName = options["mappersPackageName"]?:DEFAULT_MAPPERS_PACKAGE_NAME
+
         symbols.forEach { it.accept(FooVisitor(resolver, logger), Unit) }
         return symbols.filterNot { it.validate() }.toList()
     }
@@ -68,6 +74,7 @@ class YamgExtSymbolProcessor(
                 parentClass,
                 className!!,
                 excludeFields,
+                mappersPackageName,
                 logger
             )
             yamgExtGenerator.build()
@@ -76,6 +83,7 @@ class YamgExtSymbolProcessor(
 
     companion object {
         const val DEFAULT_EXTENSION_METHOD_NAME = "to%s"
+        const val DEFAULT_MAPPERS_PACKAGE_NAME = "dev.yamg.app"
     }
 
 

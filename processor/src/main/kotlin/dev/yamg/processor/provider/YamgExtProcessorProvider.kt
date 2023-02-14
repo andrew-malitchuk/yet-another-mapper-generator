@@ -10,6 +10,7 @@ class YamgExtProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor =
         YamgExtSymbolProcessor(
             codeGenerator = environment.codeGenerator,
+            options=environment.options,
             logger = environment.logger
         )
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dev.yamg.app.ui.FooUiModel
 import dev.yamg.core.anotation.YamgExt
 import dev.yamg.core.model.DomainMapperModel
+import io.demo.foobar.toUiModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
