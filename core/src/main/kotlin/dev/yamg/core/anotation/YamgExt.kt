@@ -20,5 +20,11 @@ annotation class YamgExt(
      * Fields to exclude in parent class
      */
     val excludeFields: Array<String> = [],
-)
+){
+    companion object{
+        const val TARGET_CLASS="targetClass"
+        const val METHOD_NAME="methodName"
+        const val EXCLUDE_FIELDS="excludeFields"
+    }
+}
 

@@ -10,6 +10,9 @@ import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.validate
 import com.squareup.kotlinpoet.ksp.toClassName
 import dev.yamg.core.anotation.YamgExt
+import dev.yamg.core.anotation.YamgExt.Companion.EXCLUDE_FIELDS
+import dev.yamg.core.anotation.YamgExt.Companion.METHOD_NAME
+import dev.yamg.core.anotation.YamgExt.Companion.TARGET_CLASS
 import dev.yamg.processor.extensions.getClassFromAnnotation
 import dev.yamg.processor.extensions.getClassName
 import dev.yamg.processor.extensions.getFieldValueFromAnnotation
@@ -30,7 +33,7 @@ class YamgExtSymbolProcessor(
         ).filterIsInstance<KSClassDeclaration>().distinct()
         if (!symbols.iterator().hasNext()) return emptyList()
 
-        mappersPackageName = options["mappersPackageName"]?:DEFAULT_MAPPERS_PACKAGE_NAME
+        mappersPackageName = options[PARAM_MAPPER_PACKAGE_NAME]?:DEFAULT_MAPPERS_PACKAGE_NAME
 
         symbols.forEach { it.accept(FooVisitor(resolver, logger), Unit) }
         return symbols.filterNot { it.validate() }.toList()
@@ -43,7 +46,7 @@ class YamgExtSymbolProcessor(
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
             val parentClass = classDeclaration.toClassName()
-            val targetClass = resolver.getClassFromAnnotation(YamgExt::class, "targetClass", logger)
+            val targetClass = resolver.getClassFromAnnotation(YamgExt::class, TARGET_CLASS, logger)
             val className = targetClass?.getClassName()
 
             if (targetClass == null || className == null) {
@@ -52,7 +55,7 @@ class YamgExtSymbolProcessor(
             var methodName =
                 (classDeclaration.getFieldValueFromAnnotation(
                     YamgExt::class,
-                    "methodName"
+                    METHOD_NAME
                 )?.value as? String?)
 
             if (methodName.isNullOrEmpty()){
@@ -65,7 +68,7 @@ class YamgExtSymbolProcessor(
             @Suppress("UNCHECKED_CAST") val excludeFields =
                 (classDeclaration.getFieldValueFromAnnotation(
                     YamgExt::class,
-                    "excludeFields"
+                    EXCLUDE_FIELDS
                 )?.value as List<String>)
 
             val fileName = "${parentClass.simpleName}Ext"
@@ -85,6 +88,9 @@ class YamgExtSymbolProcessor(
     }
 
     companion object {
+
+        const val PARAM_MAPPER_PACKAGE_NAME="mappersPackageName"
+
         const val DEFAULT_EXTENSION_METHOD_NAME = "to%s"
         const val DEFAULT_MAPPERS_PACKAGE_NAME = "dev.yamg.app"
     }

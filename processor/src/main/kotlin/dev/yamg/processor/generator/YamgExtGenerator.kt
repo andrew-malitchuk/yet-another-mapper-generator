@@ -10,6 +10,7 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
+import dev.yamg.core.anotation.YamgFieldName.Companion.FIELD_NAME
 import dev.yamg.processor.extensions.getAnnotation
 
 class YamgExtGenerator(
@@ -48,7 +49,7 @@ class YamgExtGenerator(
         val params = classDeclaration.primaryConstructor?.parameters
         var result = ""
         params?.forEach {
-            val customFieldName = it.getAnnotation<String>("fieldName")
+            val customFieldName = it.getAnnotation<String>(FIELD_NAME)
             val field = it.name?.getShortName()
             if (!excludeFields.isNullOrEmpty()) {
                 if (!excludeFields.contains(customFieldName ?: field)) {
@@ -61,9 +62,9 @@ class YamgExtGenerator(
         return result
     }
 
-    private fun generateConstructorField(item: KSValueParameter): String? {
+    private fun generateConstructorField(item: KSValueParameter): String {
         with(item) {
-            val customFieldName = getAnnotation<String>("fieldName")
+            val customFieldName = getAnnotation<String>(FIELD_NAME)
             val field = name?.getShortName()
             val isMarkedNullable = type.resolve().isMarkedNullable
 
