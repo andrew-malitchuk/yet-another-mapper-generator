@@ -53,10 +53,11 @@ class YamgExtSymbolProcessor(
                         targetClass?.toClassName()?.simpleName
                     )
 
-            val excludeFields = (classDeclaration.getFieldValueFromAnnotation(
-                YamgExt::class,
-                "excludeFields"
-            )?.value as List<String>)
+            @Suppress("UNCHECKED_CAST") val excludeFields =
+                (classDeclaration.getFieldValueFromAnnotation(
+                    YamgExt::class,
+                    "excludeFields"
+                )?.value as List<String>)
 
             val fileName = "${parentClass.simpleName}Ext"
             val yamgExtGenerator = YamgExtGenerator(

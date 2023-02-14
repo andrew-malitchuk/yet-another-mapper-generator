@@ -75,9 +75,7 @@ class YamgExtGenerator(
     }
 
     private fun getNullableDefaultValue(field: KSValueParameter): String {
-        var result = ""
-        val className = field.type.resolve().toClassName().simpleName
-        result = when (className) {
+        return when (field.type.resolve().toClassName().simpleName) {
             String::class.simpleName -> {
                 "\"\""
             }
@@ -109,9 +107,6 @@ class YamgExtGenerator(
                 throw IllegalStateException("YAMG is not able to predict default value for nullable field `$field`")
             }
         }
-
-
-        return result
     }
 
 
