@@ -13,7 +13,7 @@ import dev.yamg.core.anotation.YamgExt
 import dev.yamg.processor.extensions.getClassFromAnnotation
 import dev.yamg.processor.extensions.getClassName
 import dev.yamg.processor.extensions.getFieldValueFromAnnotation
-import dev.yamg.processor.generator.FooGenerator
+import dev.yamg.processor.generator.YamgExtGenerator
 
 // TODO: pass package for ksp-gen files via arguments from build.gradle
 class YamgExtSymbolProcessor(
@@ -59,7 +59,7 @@ class YamgExtSymbolProcessor(
             )?.value as List<String>)
 
             val fileName = "${parentClass.simpleName}Ext"
-            val fooGenerator = FooGenerator(
+            val yamgExtGenerator = YamgExtGenerator(
                 classDeclaration,
                 codeGenerator,
                 methodName,
@@ -69,7 +69,7 @@ class YamgExtSymbolProcessor(
                 excludeFields,
                 logger
             )
-            fooGenerator.build()
+            yamgExtGenerator.build()
         }
     }
 
