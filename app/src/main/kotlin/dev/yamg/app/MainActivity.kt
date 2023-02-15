@@ -1,6 +1,7 @@
 package dev.yamg.app
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import dev.yamg.app.ui.FooUiModel
 import dev.yamg.core.anotation.YamgExt
@@ -14,6 +15,9 @@ class MainActivity : AppCompatActivity() {
 
         val fooDomain = FooDomain("",1)
         fooDomain.toFooUiModel()
+
+        Log.d("foo",fooDomain::class.members.toString())
+
     }
 }
 

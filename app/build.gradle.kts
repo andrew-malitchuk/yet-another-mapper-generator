@@ -20,6 +20,10 @@ android {
     }
 }
 
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 ksp {
     arg("mappersPackageName", "io.demo.foobar")
 }
