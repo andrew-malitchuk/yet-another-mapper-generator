@@ -1,7 +1,5 @@
 # [YAMG] Yet Another Mapper Generator
 
-// **TODO:** add badges
-
           _____                    _____                    _____                    _____
          |\    \                  /\    \                  /\    \                  /\    \
          |:\____\                /::\    \                /::\____\                /::\    \
@@ -25,6 +23,52 @@
                                   \/____/                  \/____/
 
 ## :yamg:processor
+
+### Extension method mapper
+
+#### Annotation
+
+To make a KSP generate mapper method, firstly, we need to mark our class with a `YamgExt` annotation.
+
+`YamgExt` contains next params:
+
+- `targetClass` - the class that will be used as a mapping result;
+- `methodName` - extension method name;
+- `excludeFields` - fields to exclude in parent class.
+
+#### Example of usage
+
+The main idea is to generate extension method for mapping.
+
+Imagine, we have a class `FooDomainModel` and we need to map it to UI model (`FooUiModel`).
+
+To fulfill this, we need to use `@YamgExt` annotation.
+
+An example of usage:
+
+```java
+@YamgExt(
+    targetClass = FooUiModel::class,
+    methodName = "toUiModel"
+)
+data class FooDomain(
+    val fieldOne: String?,
+    val fieldTwo: Int,
+) : DomainMapperModel
+```
+
+As a result, `/build/generated/ksp/debug/kotlin/dev.yamg.app/FooDomainExt.kt` contains follow code:
+
+```java
+package dev.yamg.app
+
+import dev.yamg.app.ui.FooUiModel
+
+public fun FooDomain.toUiModel(): FooUiModel = FooUiModel(
+	fieldOne?:"",
+	fieldTwo,
+)
+```
 
 ## License
 
