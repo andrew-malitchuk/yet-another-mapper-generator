@@ -4,6 +4,8 @@ import dev.yamg.core.model.UiMapperModel
 
 data class FooUiModel(
     val fieldOne: String,
-    val fieldTwo: Int
+    val fieldTwo: Int,
+    val fieldThree: Boolean,
+    val fieldFour: Short,
 ) : UiMapperModel
 

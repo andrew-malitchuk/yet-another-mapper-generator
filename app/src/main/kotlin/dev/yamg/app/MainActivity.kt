@@ -13,23 +13,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fooDomain = FooDomain("",1)
+        val fooDomain = FooDomain("", 1, false, 1)
         fooDomain.toFooUiModel()
 
-        Log.d("foo",fooDomain::class.members.toString())
+        Log.d("foo", fooDomain::class.members.toString())
 
     }
 }
 
 @YamgExt(
     targetClass = FooUiModel::class,
-//    methodName = "toUiModel",
-//    excludeFields = ["fieldTwo"]
 )
 data class FooDomain(
-//    @YamgFieldName("foobarField")
     val fieldOne: String?,
     val fieldTwo: Int?,
+    val fieldThree: Boolean,
+    val fieldFour: Short?,
 ) : DomainMapperModel
 
 

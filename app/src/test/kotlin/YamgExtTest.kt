@@ -16,11 +16,15 @@ class YamgExtTest : FunSpec({
     beforeTest {
         source = FooDomain(
             "field-value",
-            10
+            10,
+            true,
+            100
         )
         expectedResult = FooUiModel(
             "field-value",
-            10
+            10,
+            true,
+            100
         )
         mappingResult = source.toFooUiModel()
 
@@ -34,19 +38,20 @@ class YamgExtTest : FunSpec({
         mappingResult shouldBe expectedResult
     }
 
-    test("shouldBeTypeOf FooUiModel"){
+    test("shouldBeTypeOf `FooUiModel`") {
         mappingResult.shouldBeTypeOf<FooUiModel>()
     }
 
-    test("shouldHaveAnnotation"){
+    test("shouldBe the same class") {
         mappingResult::class.shouldBe(expectedResult::class)
     }
 
-    test("foo"){
+    test("should contain the same members") {
+        @Suppress("NO_REFLECTION_IN_CLASS_PATH")
         mappingResult::class.members.shouldBe(expectedResult::class.members)
     }
 
-    test("bar"){
+    test("`toString()` results should be the same") {
         mappingResult.toString().shouldBe(expectedResult.toString())
     }
 
