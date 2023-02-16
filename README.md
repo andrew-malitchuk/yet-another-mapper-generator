@@ -38,6 +38,12 @@ YAMG supports two ways of mapper implementation - method way (`to[Layer]Model()`
 ## Installation 
 
 
+## Tests
+
+Tests were written using (Kotest)[https://kotest.io/].
+
+You can take a look at them in `:app` module.
+
 ## License
 
 ```
