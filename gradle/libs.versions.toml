@@ -18,6 +18,10 @@ material = "1.8.0"
 kotest = "5.5.5"
 #endregion Test
 
+#region Kotlin
+kotlin = "1.8.10"
+#endregion Kotlin
+
 [libraries]
 
 #region Android
@@ -34,6 +38,11 @@ kotestRunnerJunit = { module = "io.kotest:kotest-runner-junit5", version.ref = "
 kotestAssertionsCore = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 #endregion Test
+
+#region Kotlin
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+#endregion Kotlin
 
 [bundles]
 android = ["appCompat", "coreKtx"]

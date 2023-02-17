@@ -2,7 +2,6 @@
 
 import gradle.kotlin.dsl.accessors._6d51757f9d240b053e9d04252edc91dd.android
 
-
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 plugins {
