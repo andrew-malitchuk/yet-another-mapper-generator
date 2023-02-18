@@ -1,4 +1,4 @@
-val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+//val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 plugins {
     kotlin("jvm")
@@ -6,8 +6,6 @@ plugins {
 }
 
 dependencies {
-
     implementation(libs.kotlinReflect)
     implementation(libs.kotlinStdlib)
-
 }
