@@ -12,7 +12,20 @@ coreKtx = "1.9.0"
 
 #region Google
 material = "1.8.0"
+ksp = "1.8.10-1.0.9"
 #endregion Google
+
+#region Test
+kotest = "5.5.5"
+#endregion Test
+
+#region Kotlin
+kotlin = "1.8.10"
+#endregion Kotlin
+
+#region Kotlin
+kotlinpoetKsp = "1.12.0"
+#endregion Kotlin
 
 [libraries]
 
@@ -23,10 +36,28 @@ coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 
 #region Google
 material = { module = "com.google.android.material:material", version.ref = "material" }
+symbolProcessingApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+symbolProcessing = { module = "com.google.devtools.ksp:symbol-processing", version.ref = "ksp" }
 #endregion Google
+
+#region Test
+kotestRunnerJunit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotestAssertionsCore = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+#endregion Test
+
+#region Kotlin
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+#endregion Kotli
+
+#region Squareup
+kotlinpoetKsp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
+#endregion Squareup
 
 [bundles]
 android = ["appCompat", "coreKtx"]
+kotest = ["kotestRunnerJunit", "kotestAssertionsCore", "kotestProperty"]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidApplication" }
