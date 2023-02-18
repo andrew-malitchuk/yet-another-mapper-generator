@@ -12,6 +12,7 @@ coreKtx = "1.9.0"
 
 #region Google
 material = "1.8.0"
+ksp = "1.8.10-1.0.9"
 #endregion Google
 
 #region Test
@@ -20,6 +21,10 @@ kotest = "5.5.5"
 
 #region Kotlin
 kotlin = "1.8.10"
+#endregion Kotlin
+
+#region Kotlin
+kotlinpoetKsp = "1.12.0"
 #endregion Kotlin
 
 [libraries]
@@ -31,6 +36,8 @@ coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 
 #region Google
 material = { module = "com.google.android.material:material", version.ref = "material" }
+symbolProcessingApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+symbolProcessing = { module = "com.google.devtools.ksp:symbol-processing", version.ref = "ksp" }
 #endregion Google
 
 #region Test
@@ -42,7 +49,11 @@ kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" 
 #region Kotlin
 kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-#endregion Kotlin
+#endregion Kotli
+
+#region Squareup
+kotlinpoetKsp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
+#endregion Squareup
 
 [bundles]
 android = ["appCompat", "coreKtx"]
