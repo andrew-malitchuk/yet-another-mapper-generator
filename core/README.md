@@ -28,7 +28,7 @@
 
 ### Models
 
-According to Clean Architecture, there are three levels/layers of models - Data, Domain and UI.
+According to the Clean Architecture, there are three levels/layers of models - Data, Domain and UI.
 
 Each of them has own presentation in YAMG:
 - `BaseMapperModel`;
@@ -52,10 +52,9 @@ and via mapper classes (f.e. `domainUiMapper.mapTo(foobar)`).
 
 #### Classes
 
-On a top of hierarchy, there are `BaseModelMapper` and `BaseListMapper`.
+On a top of the hierarchy, there are `BaseModelMapper` and `BaseListMapper`.
 
-According to name it's clear, that `BaseModelMapper` is for single model mappers
-and `BaseListMapper` is for lists.
+According to name it's clear, that `BaseModelMapper` is for single model mappers and `BaseListMapper` is for lists.
 
 Hierarchy is follow:
 

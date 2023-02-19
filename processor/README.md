@@ -52,9 +52,7 @@ An example of usage:
         targetClass = FooUiModel::class,
         methodName = "toUiModel"
 )
-data
-
-class FooDomain(
+data class FooDomain(
         val fieldOne:String?,
         val fieldTwo:Int,
         ) :DomainMapperModel
