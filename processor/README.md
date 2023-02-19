@@ -28,7 +28,8 @@
 
 #### Annotation
 
-To make a KSP generate mapper method, firstly, we need to mark our class with a `YamgExt` annotation.
+To make a KSP generate mapper method, firstly, we need to mark our class with a `YamgExt`
+annotation.
 
 `YamgExt` contains next params:
 
@@ -48,13 +49,15 @@ An example of usage:
 
 ```java
 @YamgExt(
-    targetClass = FooUiModel::class,
-    methodName = "toUiModel"
+        targetClass = FooUiModel::class,
+        methodName = "toUiModel"
 )
-data class FooDomain(
-    val fieldOne: String?,
-    val fieldTwo: Int,
-) : DomainMapperModel
+data
+
+class FooDomain(
+        val fieldOne:String?,
+        val fieldTwo:Int,
+        ) :DomainMapperModel
 ```
 
 As a result, `/build/generated/ksp/debug/kotlin/dev.yamg.app/FooDomainExt.kt` contains follow code:
@@ -64,10 +67,10 @@ package dev.yamg.app
 
 import dev.yamg.app.ui.FooUiModel
 
-public fun FooDomain.toUiModel(): FooUiModel = FooUiModel(
-	fieldOne?:"",
-	fieldTwo,
-)
+public fun FooDomain.toUiModel():FooUiModel=FooUiModel(
+        fieldOne?:"",
+        fieldTwo,
+        )
 ```
 
 ## License
