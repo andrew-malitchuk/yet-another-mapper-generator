@@ -27,20 +27,65 @@
 
 ## About
 
-YAMG (Yet Another Mapper Generator) is a KSP written plugin; its main goal to avoid boilerplate for mapper between (Data ↔️ Domain ↔️ UI).
+**YAMG** (Yet Another Mapper Generator) is a KSP written plugin; its main goal to avoid boilerplate code for mappers between (Data ↔️ Domain ↔️ UI).
 
-YAMG supports two ways of mapper implementation - method way (`to[Layer]Model()`) and class way (`*[LayerA]to[LayerB]ModelMapper`).
+YAMG supports two ways of mapper implementation - method way (`to[Layer]Model()`) and a class way (`*[LayerA]to[LayerB]ModelMapper`).
 
 ## How it works?
 
-// **TODO:** 
+So, to make it works, firstly you need to decide which way of mapping you prefer. Let's start with extentsion method way.
 
-## Installation 
+### Extension method
+
+To map a model in a such way you need to use `@YamgExt` annotation. The only one requirement - fields orders and theirs types have to be identical; in the future, there might be some strategies of mappings (currently, WIP).
+
+To make it clear, there is a little example of usage:
+
+```java
+// Our "target" class
+data class FooUiModel(
+    val fieldOne: String,
+    val fieldTwo: Int,
+    val fieldThree: Boolean,
+    val fieldFour: Short,
+) : UiMapperModel
+
+// Source class with mapping configuration 
+@YamgExt(
+    targetClass = FooUiModel::class,
+)
+data class FooDomain(
+    val fieldOne: String?,
+    val fieldTwo: Int?,
+    val fieldThree: Boolean,
+    val fieldFour: Short?,
+) : DomainMapperModel
+
+
+fun main(){
+	val fooDomain = FooDomain("", 1, false, 1)
+	fooDomain.toFooUiModel()
+}
+```
+
+Under the hood, in a `/ksp` folder we gonna have such code:
+
+```java
+public fun FooDomain.toFooUiModel(): FooUiModel = FooUiModel(
+	fieldOne?:"",
+	fieldTwo?:0,
+	fieldThree,
+	fieldFour?:0,
+)
+```
+
+
+## Installation
 
 
 ## Tests
 
-Tests were written using (Kotest)[https://kotest.io/].
+Tests were written using [Kotest](https://kotest.io/).
 
 You can take a look at them in `:app` module.
 
