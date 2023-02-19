@@ -1,7 +1,5 @@
 # [YAMG] Yet Another Mapper Generator
 
-// **TODO:** add badges
-
           _____                    _____                    _____                    _____          
          |\    \                  /\    \                  /\    \                  /\    \         
          |:\____\                /::\    \                /::\____\                /::\    \        
@@ -32,12 +30,16 @@
 
 According to Clean Architecture, there are three levels/layers of models - Data, Domain and UI.
 
-Each of them has own presentation in YAMG.
+Each of them has own presentation in YAMG:
+- `BaseMapperModel`;
+- `DataMapperModel`;
+- `DomainMapperModel`;
+- `UiMapperModel`.
 
 > To avoid problems in naming, each levels model has "unique" (i hope) naming
 > patter `<Layer>MapperModel`.
 
-Also, there are a base model - `BaseMapperModel`.
+Also, there is a base model - `BaseMapperModel`.
 
 So, hierarchy diagram is follow:
 
@@ -45,7 +47,7 @@ So, hierarchy diagram is follow:
 
 ### Mappers
 
-There are two ways how to map an object: via method which is specified in a class (f.e `toDomain()`)
+As you know, there are two ways how to map an object: via method which is specified in a class (f.e `toDomain()`)
 and via mapper classes (f.e. `domainUiMapper.mapTo(foobar)`).
 
 #### Classes
@@ -58,10 +60,6 @@ and `BaseListMapper` is for lists.
 Hierarchy is follow:
 
 // **TODO:** hierarchy diagram
-
-#### Models
-
-**TODO:** WIP
 
 ## License
 
