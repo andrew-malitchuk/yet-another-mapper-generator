@@ -18,7 +18,6 @@ import dev.yamg.processor.extensions.getClassName
 import dev.yamg.processor.extensions.getFieldValueFromAnnotation
 import dev.yamg.processor.generator.YamgExtGenerator
 
-// TODO: pass package for ksp-gen files via arguments from build.gradle
 class YamgExtSymbolProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
