@@ -4,14 +4,10 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSValueParameter
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
-import dev.yamg.core.anotation.YamgFieldName.Companion.FIELD_NAME
-import dev.yamg.processor.extensions.getAnnotation
 
 class YamgExtGenerator(
     private val classDeclaration: KSClassDeclaration,
@@ -34,82 +30,13 @@ class YamgExtGenerator(
                     .returns(className)
                     .addStatement(
                         "return ${className.simpleName}(" +
-                                getClassField() +
+                                getClassField(classDeclaration,excludeFields) +
                                 "\n)"
                     )
                     .build()
             )
             .build()
-
         extensionMethod.writeTo(codeGenerator, Dependencies(true))
     }
-
-
-    private fun getClassField(): String {
-        val params = classDeclaration.primaryConstructor?.parameters
-        var result = ""
-        params?.forEach {
-            val customFieldName = it.getAnnotation<String>(FIELD_NAME)
-            val field = it.name?.getShortName()
-            if (!excludeFields.isNullOrEmpty()) {
-                if (!excludeFields.contains(customFieldName ?: field)) {
-                    result += generateConstructorField(it)
-                }
-            } else {
-                result += generateConstructorField(it)
-            }
-        }
-        return result
-    }
-
-    private fun generateConstructorField(item: KSValueParameter): String {
-        with(item) {
-            val customFieldName = getAnnotation<String>(FIELD_NAME)
-            val field = name?.getShortName()
-            val isMarkedNullable = type.resolve().isMarkedNullable
-
-            var parameter = customFieldName ?: field
-            if (isMarkedNullable) {
-                parameter += "?:${getNullableDefaultValue(item)}"
-            }
-            return "\n\t${parameter},"
-        }
-    }
-
-    private fun getNullableDefaultValue(field: KSValueParameter): String {
-        return when (field.type.resolve().toClassName().simpleName) {
-            String::class.simpleName -> {
-                "\"\""
-            }
-            Int::class.simpleName -> {
-                "0"
-            }
-            Long::class.simpleName -> {
-                "0L"
-            }
-            Float::class.simpleName -> {
-                "0f"
-            }
-            Double::class.simpleName -> {
-                "0"
-            }
-            Boolean::class.simpleName -> {
-                "false"
-            }
-            Byte::class.simpleName -> {
-                "0"
-            }
-            Short::class.simpleName -> {
-                "0"
-            }
-            Char::class.simpleName -> {
-                "\'\'"
-            }
-            else -> {
-                throw IllegalStateException("YAMG is not able to predict default value for nullable field `$field`")
-            }
-        }
-    }
-
 
 }

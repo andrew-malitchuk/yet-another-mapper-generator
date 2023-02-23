@@ -2,8 +2,10 @@ package dev.yamg.processor.generator
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.plusParameter
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
@@ -12,7 +14,7 @@ import dev.yamg.core.model.DomainMapperModel
 import dev.yamg.core.model.UiMapperModel
 
 class YamgItemGenerator(
-//    private val classDeclaration: KSClassDeclaration,
+    private val classDeclaration: KSClassDeclaration,
     private val codeGenerator: CodeGenerator,
 //    private val methodName: String,
     private val fileName: String,
@@ -43,8 +45,37 @@ class YamgItemGenerator(
                             )
                         )
                     )
-                    .build()
-            )
+                    .addFunction(
+                        FunSpec
+                            .builder("mapTo")
+                            .returns(
+                                ClassName(
+                                    "dev.yamg.core.model",
+                                    "UiMapperModel"
+                                )
+                            )
+                            .addStatement(
+                                "return ${"UiMapperModel"}(" +
+                                        getClassField(classDeclaration) +
+                                        "\n)"
+                            ).build()
+                    )
+                    .addFunction(
+                        FunSpec
+                            .builder("mapFrom")
+                            .returns(
+                                ClassName(
+                                    "dev.yamg.core.model",
+                                    "DomainMapperModel"
+                                )
+                            )
+                            .addStatement(
+                                "return ${"DomainMapperModel"}(" +
+                                        getClassField(classDeclaration) +
+                                        "\n)"
+                            ).build()
+                    ).build()
+            ).build()
         }.build()
         mapperClass.writeTo(codeGenerator, Dependencies(true))
     }
