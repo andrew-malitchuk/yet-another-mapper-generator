@@ -9,6 +9,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.validate
 import dev.yamg.core.anotation.YamgItem
+import dev.yamg.processor.generator.YamgItemGenerator
 
 class YamgItemSymbolProcessor(
     private val codeGenerator: CodeGenerator,
@@ -34,6 +35,15 @@ class YamgItemSymbolProcessor(
         private val resolver: Resolver,
         private val logger: KSPLogger
     ) : KSVisitorVoid() {
+
+        override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
+            val yamgItemGenerator = YamgItemGenerator(
+                codeGenerator,
+                "foobar",
+                "foo.bar"
+            )
+            yamgItemGenerator.build()
+        }
 
     }
 

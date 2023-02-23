@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import dev.yamg.app.ui.FooUiModel
 import dev.yamg.core.anotation.YamgExt
+import dev.yamg.core.anotation.YamgItem
 import dev.yamg.core.model.DomainMapperModel
 import io.demo.foobar.toFooUiModel
 
@@ -32,3 +33,8 @@ data class FooDomain(
 ) : DomainMapperModel
 
 
+@YamgItem(
+    FooUiModel::class,
+    FooUiModel::class
+)
+data class Foo(val a:String)
