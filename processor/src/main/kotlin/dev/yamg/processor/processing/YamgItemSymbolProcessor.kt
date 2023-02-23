@@ -38,6 +38,7 @@ class YamgItemSymbolProcessor(
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
             val yamgItemGenerator = YamgItemGenerator(
+                classDeclaration,
                 codeGenerator,
                 "foobar",
                 "foo.bar"
