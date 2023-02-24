@@ -9,9 +9,6 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.plusParameter
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
-import dev.yamg.core.mapper.model.DomainUiModelMapper
-import dev.yamg.core.model.DomainMapperModel
-import dev.yamg.core.model.UiMapperModel
 
 class YamgItemGenerator(
     private val classDeclaration: KSClassDeclaration,
@@ -80,16 +77,4 @@ class YamgItemGenerator(
         mapperClass.writeTo(codeGenerator, Dependencies(true))
     }
 
-}
-
-
-class FooDomainUiMapper : DomainUiModelMapper<DomainMapperModel, UiMapperModel> {
-
-    override fun mapTo(from: DomainMapperModel): UiMapperModel {
-        TODO("Not yet implemented")
-    }
-
-    override fun mapFrom(to: UiMapperModel): DomainMapperModel {
-        TODO("Not yet implemented")
-    }
 }
