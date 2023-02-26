@@ -69,12 +69,11 @@ class YamgItemSymbolProcessor(
                 )
             }
 
-
             val yamgItemGenerator = YamgItemGenerator(
                 classDeclaration,
                 codeGenerator,
                 className,
-                "foo.bar",
+                mappersPackageName,
                 logger
             )
             yamgItemGenerator.build()

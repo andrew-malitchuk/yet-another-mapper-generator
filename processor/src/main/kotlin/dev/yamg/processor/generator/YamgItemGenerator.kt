@@ -24,7 +24,6 @@ class YamgItemGenerator(
 
     fun build() {
 
-
         val mapperClass = FileSpec.builder(packageName, className).apply {
             this.addType(
                 TypeSpec.classBuilder(className)
