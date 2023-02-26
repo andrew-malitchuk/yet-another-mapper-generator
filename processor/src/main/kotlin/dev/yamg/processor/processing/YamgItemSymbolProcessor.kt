@@ -9,6 +9,9 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.validate
 import dev.yamg.core.anotation.YamgItem
+import dev.yamg.processor.extensions.getClassFromAnnotation
+import dev.yamg.processor.extensions.getClassName
+import dev.yamg.processor.extensions.getFieldValueFromAnnotation
 import dev.yamg.processor.generator.YamgItemGenerator
 
 class YamgItemSymbolProcessor(
@@ -37,11 +40,42 @@ class YamgItemSymbolProcessor(
     ) : KSVisitorVoid() {
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
+            val fromClass = resolver.getClassFromAnnotation(
+                YamgItem::class,
+                YamgItem.FROM_CLASS,
+                logger
+            )
+            val toClass = resolver.getClassFromAnnotation(
+                YamgItem::class,
+                YamgItem.TO_CLASS,
+                logger
+            )
+
+            if (fromClass == null || toClass == null) {
+                logger.exception(NullPointerException("Something wrong with parsing"))
+            }
+
+            var className =
+                (classDeclaration.getFieldValueFromAnnotation(
+                    YamgItem::class,
+                    YamgItem.CLASS_NAME
+                )?.value as? String?)
+
+            if (className.isNullOrEmpty()) {
+                className = String.format(
+                    DEFAULT_CLASS_NAME,
+                    fromClass?.getClassName()?.simpleName,
+                    toClass?.getClassName()?.simpleName
+                )
+            }
+
+
             val yamgItemGenerator = YamgItemGenerator(
                 classDeclaration,
                 codeGenerator,
-                "foobar",
-                "foo.bar"
+                className,
+                "foo.bar",
+                logger
             )
             yamgItemGenerator.build()
         }
@@ -53,7 +87,7 @@ class YamgItemSymbolProcessor(
 
         const val PARAM_MAPPER_PACKAGE_NAME = "mappersPackageName"
 
-        const val DEFAULT_EXTENSION_METHOD_NAME = "to%s"
+        const val DEFAULT_CLASS_NAME = "%s%sMapper"
         const val DEFAULT_MAPPERS_PACKAGE_NAME = "dev.yamg.app"
     }
 }

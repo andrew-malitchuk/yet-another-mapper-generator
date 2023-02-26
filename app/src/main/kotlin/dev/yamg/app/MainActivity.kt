@@ -3,6 +3,7 @@ package dev.yamg.app
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import dev.yamg.app.domain.FooDomainModel
 import dev.yamg.app.ui.FooUiModel
 import dev.yamg.core.anotation.YamgExt
 import dev.yamg.core.anotation.YamgItem
@@ -34,7 +35,7 @@ data class FooDomain(
 
 
 @YamgItem(
-    FooUiModel::class,
-    FooUiModel::class
+    fromClass = FooUiModel::class,
+    toClass = FooDomainModel::class
 )
-data class Foo(val a:String)
+data class Foo(val a: String)
