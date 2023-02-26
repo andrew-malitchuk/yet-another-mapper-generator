@@ -8,7 +8,9 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.validate
+import com.squareup.kotlinpoet.asClassName
 import dev.yamg.core.anotation.YamgItem
+import dev.yamg.core.mapper.model.ModelMapper
 import dev.yamg.processor.extensions.getClassFromAnnotation
 import dev.yamg.processor.extensions.getClassName
 import dev.yamg.processor.extensions.getFieldValueFromAnnotation
@@ -51,7 +53,9 @@ class YamgItemSymbolProcessor(
                 logger
             )
 
-            if (fromClass == null || toClass == null) {
+            val mapperSuperClass = ModelMapper::class.asClassName()
+
+            if (fromClass == null || toClass == null ) {
                 logger.exception(NullPointerException("Something wrong with parsing"))
             }
 
@@ -72,8 +76,11 @@ class YamgItemSymbolProcessor(
             val yamgItemGenerator = YamgItemGenerator(
                 classDeclaration,
                 codeGenerator,
+                fromClass = fromClass?.getClassName()!!,
+                toClass = toClass?.getClassName()!!,
                 className,
                 mappersPackageName,
+                mapperSuperClass,
                 logger
             )
             yamgItemGenerator.build()

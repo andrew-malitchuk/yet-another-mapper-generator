@@ -3,10 +3,10 @@ package dev.yamg.app
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import dev.yamg.app.domain.FooDomainModel
 import dev.yamg.app.ui.FooUiModel
 import dev.yamg.core.anotation.YamgExt
 import dev.yamg.core.anotation.YamgItem
+import dev.yamg.core.model.BaseMapperModel
 import dev.yamg.core.model.DomainMapperModel
 import io.demo.foobar.toFooUiModel
 
@@ -35,7 +35,11 @@ data class FooDomain(
 
 
 @YamgItem(
-    fromClass = FooUiModel::class,
-    toClass = FooDomainModel::class
+    fromClass = From::class,
+    toClass = To::class
 )
 data class Foo(val a: String)
+
+
+data class From(val a:String):BaseMapperModel
+data class To(val a:String):BaseMapperModel

@@ -14,6 +14,7 @@ annotation class YamgItem(
         const val FROM_CLASS="fromClass"
         const val TO_CLASS="toClass"
         const val CLASS_NAME="className"
+        const val MAPPER_SUPPER_CLASS="mapperSupperClass"
         const val EXCLUDE_FIELDS="excludeFields"
     }
 }
