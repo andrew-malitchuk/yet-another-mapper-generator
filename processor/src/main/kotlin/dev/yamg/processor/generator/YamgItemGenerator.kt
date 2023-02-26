@@ -50,7 +50,7 @@ class YamgItemGenerator(
                             )
                             .addStatement(
                                 "return ${toClass.simpleName}(" +
-                                        getClassField(classDeclaration) +
+                                        getClassField(classDeclaration, predicate = "from") +
                                         "\n)"
                             ).build()
                     )
@@ -69,7 +69,7 @@ class YamgItemGenerator(
                             )
                             .addStatement(
                                 "return ${fromClass.simpleName}(" +
-                                        getClassField(classDeclaration) +
+                                        getClassField(classDeclaration, predicate = "to") +
                                         "\n)"
                             ).build()
                     ).build()

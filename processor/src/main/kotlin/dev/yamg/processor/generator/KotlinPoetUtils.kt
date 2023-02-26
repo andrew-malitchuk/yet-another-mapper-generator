@@ -41,7 +41,7 @@ fun getNullableDefaultValue(field: KSValueParameter): String {
     }
 }
 
-fun generateConstructorField(item: KSValueParameter): String {
+fun generateConstructorField(item: KSValueParameter, predicate: String? = null): String {
     with(item) {
         val customFieldName = getAnnotation<String>(YamgFieldName.FIELD_NAME)
         val field = name?.getShortName()
@@ -51,11 +51,20 @@ fun generateConstructorField(item: KSValueParameter): String {
         if (isMarkedNullable) {
             parameter += "?:${getNullableDefaultValue(item)}"
         }
-        return "\n\t${parameter},"
+//        return "\n\t${parameter},"
+        return if (predicate.isNullOrEmpty()) {
+            "\n\t${parameter},"
+        } else {
+            "\n\t${predicate}.${parameter},"
+        }
     }
 }
 
-fun getClassField(classDeclaration: KSClassDeclaration,excludeFields:List<String>? = null): String {
+fun getClassField(
+    classDeclaration: KSClassDeclaration,
+    excludeFields: List<String>? = null,
+    predicate: String? = null
+): String {
     val params = classDeclaration.primaryConstructor?.parameters
     var result = ""
     params?.forEach {
@@ -63,10 +72,10 @@ fun getClassField(classDeclaration: KSClassDeclaration,excludeFields:List<String
         val field = it.name?.getShortName()
         if (!excludeFields.isNullOrEmpty()) {
             if (!excludeFields.contains(customFieldName ?: field)) {
-                result += generateConstructorField(it)
+                result += generateConstructorField(it,predicate)
             }
         } else {
-            result += generateConstructorField(it)
+            result += generateConstructorField(it,predicate)
         }
     }
     return result

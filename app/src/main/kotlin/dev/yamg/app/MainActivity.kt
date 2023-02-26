@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("foo", fooDomain::class.members.toString())
 
+
     }
 }
 
