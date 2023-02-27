@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
         fooDomain.toFooUiModel()
 
         Log.d("foo", fooDomain::class.members.toString())
-
-
     }
 }
 
@@ -42,5 +40,5 @@ data class FooDomain(
 data class Foo(val a: String)
 
 
-data class From(val a:String):BaseMapperModel
-data class To(val a:String):BaseMapperModel
+data class From(val a: String) : BaseMapperModel
+data class To(val a: String) : BaseMapperModel
