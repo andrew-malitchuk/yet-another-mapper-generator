@@ -51,7 +51,6 @@ fun generateConstructorField(item: KSValueParameter, predicate: String? = null):
         if (isMarkedNullable) {
             parameter += "?:${getNullableDefaultValue(item)}"
         }
-//        return "\n\t${parameter},"
         return if (predicate.isNullOrEmpty()) {
             "\n\t${parameter},"
         } else {

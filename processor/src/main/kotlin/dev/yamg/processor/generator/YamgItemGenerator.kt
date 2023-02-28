@@ -79,14 +79,3 @@ class YamgItemGenerator(
     }
 
 }
-
-//class FooDomainUiMapper : DomainUiModelMapper<DomainMapperModel, UiMapperModel> {
-//
-//    override fun mapTo(from: DomainMapperModel): UiMapperModel {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun mapFrom(to: UiMapperModel): DomainMapperModel {
-//        TODO("Not yet implemented")
-//    }
-//}
