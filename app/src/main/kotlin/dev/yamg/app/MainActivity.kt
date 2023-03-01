@@ -33,12 +33,11 @@ data class FooDomain(
 ) : DomainMapperModel
 
 
+
+data class FoobarUi(val a: String) : BaseMapperModel
+
 @YamgItem(
-    fromClass = From::class,
-    toClass = To::class
+    fromClass = FoobarDomain::class,
+    toClass = FoobarUi::class,
 )
-data class Foo(val a: String)
-
-
-data class From(val a: String) : BaseMapperModel
-data class To(val a: String) : BaseMapperModel
+data class FoobarDomain(val a: String) : BaseMapperModel
