@@ -1,35 +1,55 @@
-import dev.yamg.app.FooDomain
-import dev.yamg.app.ui.FooUiModel
+import dev.yamg.app.FoobarDomain
+import dev.yamg.app.FoobarUi
+import io.demo.foobar.FoobarDomainFoobarUiMapper
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.equality.shouldBeEqualToComparingFields
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeTypeOf
 
 
 class YamgItemTest : FunSpec({
 
-    lateinit var source: FooDomain
-    lateinit var expectedResult: FooUiModel
-    lateinit var mappingResult: FooUiModel
+    lateinit var source: FoobarDomain
+    lateinit var expectedResult: FoobarUi
+    lateinit var mappingResult: FoobarUi
 
     var mapper = FoobarDomainFoobarUiMapper()
 
     beforeTest {
-        source = FooDomain(
+        source = FoobarDomain(
             "field-value",
-            10,
-            true,
-            100
         )
-        expectedResult = FooUiModel(
+        expectedResult = FoobarUi(
             "field-value",
-            10,
-            true,
-            100
         )
-//        mappingResult = mapper.
+        mappingResult = mapper.mapTo(source)
 
     }
 
+    test("shouldBeEqualToComparingFields") {
+        mappingResult shouldBeEqualToComparingFields expectedResult
+    }
 
+    test("shouldBe") {
+        mappingResult shouldBe expectedResult
+    }
 
+    test("shouldBeTypeOf `FooUiModel`") {
+        mappingResult.shouldBeTypeOf<FoobarUi>()
+    }
+
+    test("shouldBe the same class") {
+        mappingResult::class.shouldBe(expectedResult::class)
+    }
+
+    test("should contain the same members") {
+        @Suppress("NO_REFLECTION_IN_CLASS_PATH")
+        mappingResult::class.members.shouldBe(expectedResult::class.members)
+    }
+
+    test("`toString()` results should be the same") {
+        mappingResult.toString().shouldBe(expectedResult.toString())
+    }
 
 
 })
