@@ -51,5 +51,4 @@ class YamgItemTest : FunSpec({
         mappingResult.toString().shouldBe(expectedResult.toString())
     }
 
-
 })
