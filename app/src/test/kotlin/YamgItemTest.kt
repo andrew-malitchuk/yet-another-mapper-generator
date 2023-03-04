@@ -13,7 +13,7 @@ class YamgItemTest : FunSpec({
     lateinit var expectedResult: FoobarUi
     lateinit var mappingResult: FoobarUi
 
-    var mapper = FoobarDomainFoobarUiMapper()
+    val mapper = FoobarDomainFoobarUiMapper()
 
     beforeTest {
         source = FoobarDomain(
@@ -34,7 +34,7 @@ class YamgItemTest : FunSpec({
         mappingResult shouldBe expectedResult
     }
 
-    test("shouldBeTypeOf `FooUiModel`") {
+    test("shouldBeTypeOf `FoobarUi`") {
         mappingResult.shouldBeTypeOf<FoobarUi>()
     }
 
