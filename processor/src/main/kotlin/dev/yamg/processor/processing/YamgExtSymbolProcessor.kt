@@ -18,7 +18,6 @@ import dev.yamg.processor.extensions.getClassName
 import dev.yamg.processor.extensions.getFieldValueFromAnnotation
 import dev.yamg.processor.generator.YamgExtGenerator
 
-// TODO: pass package for ksp-gen files via arguments from build.gradle
 class YamgExtSymbolProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
@@ -35,11 +34,11 @@ class YamgExtSymbolProcessor(
 
         mappersPackageName = options[PARAM_MAPPER_PACKAGE_NAME]?:DEFAULT_MAPPERS_PACKAGE_NAME
 
-        symbols.forEach { it.accept(FooVisitor(resolver, logger), Unit) }
+        symbols.forEach { it.accept(YamgExtVisitor(resolver, logger), Unit) }
         return symbols.filterNot { it.validate() }.toList()
     }
 
-    inner class FooVisitor(
+    inner class YamgExtVisitor(
         private val resolver: Resolver,
         private val logger: KSPLogger
     ) : KSVisitorVoid() {
