@@ -1,3 +1,4 @@
 dev.yamg.processor.provider.YamgProcessorProvider
 dev.yamg.processor.provider.YamgExtProcessorProvider
 dev.yamg.processor.provider.YamgItemProcessorProvider
+dev.yamg.processor.provider.YamgListProcessorProvider
